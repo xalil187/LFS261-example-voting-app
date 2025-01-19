@@ -26,10 +26,15 @@ pipeline {
         }
     } 
 
-    post{
-      always{
-          echo 'This pipeline is completed.'
-          cleanWs()
-      }
+    post {
+        always {
+            echo 'This pipeline is completed.'
+        }
+        success {
+            slackSend ( channel: "#all-lfs-cicd-ws", message: "Build Success: ${env.JOB_NAME} ${env.BUILD_NUMBER}")
+        }
+        failure {
+            slackSend ( channel: "#all-lfs-cicd-ws", message: "Build Failed: ${env.JOB_NAME} ${env.BUILD_NUMBER}")
+        }
     }
 }
